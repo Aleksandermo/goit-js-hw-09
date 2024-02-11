@@ -3,6 +3,6 @@ function createPromise(position, delay) {
   if (shouldResolve) {
     // Fulfill
   } else {
-    // Reject
+    // Reject :D
   }
 }
