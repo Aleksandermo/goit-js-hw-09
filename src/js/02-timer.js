@@ -1,5 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 const startButton = document.querySelector('[data-start]');
 const dateTimePicker = document.querySelector('#datetime-picker');
 
@@ -33,7 +34,7 @@ onClose(selectedDates, dateStr, instance) {
     
     if (selectedDate < today) {
         startButton.disabled = true;
-        window.alert("Please choose a date in the future!");
+        Notiflix.Notify.failure("Please choose a date in the future!");
         instance.clear();
     }
     else {
@@ -43,6 +44,8 @@ onClose(selectedDates, dateStr, instance) {
 };
 
 let timeRemaining;
+let countdownInterval;
+let countdownFinished = false;
 
 const handleClick = (action) => {
 const selectedDate = new Date(dateTimePicker.value);
@@ -53,23 +56,35 @@ const today = new Date();
 
     timerId = setInterval(() => {
     const now = new Date();
-        const timeRemaining = selectedDate - new Date();
-        const { days, hours, minutes, seconds } = convertMs(timeRemaining);
-        console.log(`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`);
-        
-        daysElement.textContent = days.toString().padStart(2, '0');
-        hoursElement.textContent = hours.toString().padStart(2, '0');
-        minutesElement.textContent = minutes.toString().padStart(2, '0');
-        secondsElement.textContent = seconds.toString().padStart(2, '0');
+        timeRemaining = selectedDate - new Date();
 
-        if (timeRemaining <= 0) {
-        clearInterval(countdownInterval);
-        window.alert("Countdown finished!");
-            }
+        if (timeRemaining > 0) {
+            const { days, hours, minutes, seconds } = convertMs(timeRemaining);
+            console.log(`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`);
         
+            daysElement.textContent = days.toString().padStart(2, '0');
+            hoursElement.textContent = hours.toString().padStart(2, '0');
+            minutesElement.textContent = minutes.toString().padStart(2, '0');
+            secondsElement.textContent = seconds.toString().padStart(2, '0');
+        } else {
+        clearInterval(countdownInterval);
+        daysElement.textContent = '00';
+        hoursElement.textContent = '00';
+        minutesElement.textContent = '00';
+        secondsElement.textContent = '00';
+            if (!countdownFinished) {
+            Notiflix.Notify.success("Countdown finished!");
+            countdownFinished = true;
+        }
+            }
         }, 1000);
     }
 };
-startButton.addEventListener("click", () => handleClick("Start"));
+
+startButton.addEventListener("click", () => {
+    if (!countdownInterval) {
+        handleClick("Start");
+    }
+});
 
 flatpickr(dateTimePicker, options);
