@@ -57,6 +57,8 @@ const today = new Date();
         startButton.disabled = true;
         timeDifference = selectedDate - today;
 
+        let updatedThisSecond = false;
+
     timerId = setInterval(() => {
     const now = new Date();
         timeRemaining = selectedDate - new Date();
@@ -65,10 +67,17 @@ const today = new Date();
             const { days, hours, minutes, seconds } = convertMs(timeRemaining);
             console.log(`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`);
         
-            daysElement.textContent = days.toString().padStart(2, '0');
-            hoursElement.textContent = hours.toString().padStart(2, '0');
-            minutesElement.textContent = minutes.toString().padStart(2, '0');
-            secondsElement.textContent = seconds.toString().padStart(2, '0');
+            if (seconds !== previousSeconds) {
+                daysElement.textContent = days.toString().padStart(2, '0');
+                hoursElement.textContent = hours.toString().padStart(2, '0');
+                minutesElement.textContent = minutes.toString().padStart(2, '0');
+                secondsElement.textContent = seconds.toString().padStart(2, '0');
+
+                updatedThisSecond = true;
+            } else if (updatedThisSecond) {
+                updatedThisSecond = false;
+            }
+        previousSeconds = seconds;
         } else {
         clearInterval(countdownInterval);
         daysElement.textContent = '00';
@@ -80,7 +89,8 @@ const today = new Date();
             countdownFinished = true;
         }
             }
-        }, 1000);
+    }, 1000);
+        let previousSeconds = -1;
     }
 };
 
