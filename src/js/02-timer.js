@@ -43,6 +43,7 @@ onClose(selectedDates, dateStr, instance) {
   },
 };
 
+let timeDifference;
 let timeRemaining;
 let countdownInterval;
 let countdownFinished = false;
