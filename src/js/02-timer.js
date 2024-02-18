@@ -42,7 +42,7 @@ onClose(selectedDates, dateStr, instance) {
     }
   },
 };
-
+let timerId;
 let timeDifference;
 let timeRemaining;
 let countdownInterval;
