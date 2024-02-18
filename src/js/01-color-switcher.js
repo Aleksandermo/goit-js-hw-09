@@ -16,5 +16,6 @@ const handleClick = (action) => {
         clearInterval(timerId);
     }
 };
+/* */
 startButton.addEventListener("click", () => handleClick("Start"));
-stopButton.addEventListener("click", () => handleClick("Stop"));
+stopButton.addEventListener("click", () => handleClick("Stop")); 
