@@ -1,13 +1,15 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import Notiflix from 'notiflix';
+
 const startButton = document.querySelector('[data-start]');
 const dateTimePicker = document.querySelector('#datetime-picker');
-
 const daysElement = document.querySelector('[data-days]');
 const hoursElement = document.querySelector('[data-hours]');
 const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
+
+let timerId;
 
 function convertMs(ms) {
   const second = 1000;
@@ -42,7 +44,7 @@ onClose(selectedDates, dateStr, instance) {
     }
   },
 };
-let timerId;
+
 let timeDifference;
 let timeRemaining;
 let countdownInterval;
